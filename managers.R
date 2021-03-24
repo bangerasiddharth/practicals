@@ -66,3 +66,86 @@ managers_data
 str(managers_data)
 
 managers_data
+
+# Create a new col called 'summary_col' that
+# contains a summary of each row
+summary_col <- managers_data$Q1 + 
+  managers_data$Q2 + 
+  managers_data$Q3 + 
+  managers_data$Q4 + 
+  managers_data$Q5
+
+summary_col
+
+# Add summary_col to the end of the data frame
+# take content of data frame, create a new data frame
+# and add sumary_col vector to the data frame
+
+managers_data <- data.frame(managers_data, summary_col)
+managers_data
+
+# Calculate mean value for each row
+mean_value <- rowMeans(managers_data[5:9])
+mean_value
+
+# Add the mean_value vector to the data frame
+
+managers_data <- data.frame(managers_data, mean_value)
+managers_data
+
+# Change variable titles to make them more readable
+names(managers_data)[11] <- "Summary"
+names(managers_data)[12] <- "Mean value"
+
+# show the structure of the data frame
+str(managers_data)
+managers_data
+
+# Convert current date chr variable to a date type var
+# currently using dd/mm/yy
+
+managers_data$Date
+converted_date <- as.Date(managers_data$Date, "%m/%d/%y")
+converted_date
+str(converted_date)
+
+# Overwrite the current date var with the new date var
+# in the managers data frame
+managers_data$Date <- converted_date
+str(managers_data)
+
+# Dealing with missing data
+
+# Listwise deletion = remove any rows that contain NA
+new_managers_data <- na.omit(managers_data)
+new_managers_data
+
+# Use complee.cases 
+complete_managers_data <- complete.cases(managers_data)
+complete_managers_data
+sum(complete_managers_data)
+
+# List rows that do not have missing vals
+complete_managers_data <- managers_data[complete.cases(managers_data),]
+complete_managers_data
+
+# list rows with missing vals
+managers_data[!complete.cases(managers_data),]
+
+# show summmary of all missing vals in a variable
+sum(is.na(managers_data$Age))
+sum(is.na(managers_data$`Mean value`))
+
+# Install and use the mice package to show
+# missing vars i nthe managers dat frame
+install.packages("mice")
+library(mice)
+md.pattern(managers_data)
+
+# The VIM package can also show missing values
+install.packages("VIM")
+library(VIM)
+missing_values <- aggr(managers_data, prop = FALSE, numbers = TRUE)
+
+# show summary of the content of missing_values
+summary(missing_values)
